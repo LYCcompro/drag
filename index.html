@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			div
+			{
+				width:100px;
+				height:100px;
+				position: absolute;
+			}
+			#box1
+			{
+				background-color: red;
+				/*left:0;
+				top:0;*/
+			}
+			#box2
+			{
+				background-color: chartreuse;
+				left:200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box1"></div>
+		<div id="box2"></div>
+		<script>
+			function drug(id)
+			{
+				this.box=document.getElementById(id);
+				this.disx=0;
+				this.disy=0;
+				var _this=this;
+				this.init=function()
+				{				
+					this.box.onmousedown=function(ev)
+					{
+//						alert(1)
+						var ev=ev||event;
+						_this.box.style.zIndex=2;
+						_this.down(ev);
+						document.onmousemove=function(ev)
+						{
+							var ev=ev||event;
+							_this.move(ev);
+						}
+						document.onmouseup=function()
+						{
+							_this.up();
+						}
+						return false;
+					}
+				}
+			}
+			drug.prototype.down=function(ev)
+			{
+//				alert(1)
+				this.disx=ev.clientX-this.box.offsetLeft;
+				this.disy=ev.clientY-this.box.offsetTop;
+			}
+			drug.prototype.move=function(ev)
+			{
+//				console.log(ev)
+				this.box.style.left=ev.clientX-this.disx+"px";
+				this.box.style.top=ev.clientY-this.disy+"px";	
+//				console.log(this.offsetLeft,this.offsetTop)
+			}
+			drug.prototype.up=function()
+			{
+				document.onmousemove=document.up=null;
+				this.box.style.zIndex=1;
+			}
+			var p1=new drug("box1");
+			p1.init();
+			var p2=new drug("box2");
+			p2.init();
+		</script>
+	</body>
+</html>
